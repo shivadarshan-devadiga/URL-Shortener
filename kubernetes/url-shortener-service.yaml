@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: url-shortener-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: url-shortener
   ports:
     - port: 80
       targetPort: 5000
-      nodePort: 30080  # optional, or leave blank for auto-assign
+      nodePort: 30080

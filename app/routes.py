@@ -6,9 +6,7 @@ import os
 import random
 
 SHORT_URL_LEN = 6
-HOST_NAME = "http://localhost:5000"
-EXPIRY_SECONDS = 30 * 24 * 60 * 60  # 30 days
-
+EXPIRY_SECONDS = 30 * 24 * 60 * 60
 redis_password = os.environ.get("REDIS_PASSWORD")
 
 redis_short_to_long = redis.StrictRedis(
@@ -35,23 +33,15 @@ def generate_short_url():
 def index():
     if request.method == 'POST':
         original_url = request.form['url']
-
-        # Check if long URL already exists in DB1
         existing_short = redis_long_to_short.get(original_url)
         if existing_short:
-            return render_template('index.html', short_url=existing_short, host_url=HOST_NAME)
-
-        # Generate unique short URL
+            return render_template('index.html', short_url=existing_short, host_url=request.host_url)
         short_url = generate_short_url()
         while redis_short_to_long.exists(short_url):
             short_url = generate_short_url()
-
-        # Store in separate DBs with expiry
         redis_short_to_long.setex(short_url, EXPIRY_SECONDS, original_url)
         redis_long_to_short.setex(original_url, EXPIRY_SECONDS, short_url)
-
-        return render_template('index.html', short_url=short_url, host_url=HOST_NAME)
-
+        return render_template('index.html', short_url=short_url, host_url=request.host_url)
     return render_template('index.html')
 
 @app.route('/<short_url>')

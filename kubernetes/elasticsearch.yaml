@@ -36,3 +36,12 @@ spec:
               value: single-node
             - name: xpack.security.enabled
               value: "false"
+            - name: ES_JAVA_OPTS
+              value: "-Xms512m -Xmx512m"
+          resources:
+            limits:
+              memory: "3Gi"
+              cpu: "2"
+            requests:
+              memory: "1Mi"
+              cpu: "1"
