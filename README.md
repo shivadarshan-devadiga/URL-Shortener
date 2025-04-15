@@ -223,5 +223,3 @@ For suggestions or issues, feel free to open an issue on GitHub:
 
 Thank you for checking out the **URL Shortener** project! 🎉
 ```
-
----
