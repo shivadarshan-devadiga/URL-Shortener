@@ -121,31 +121,68 @@ kubectl get hpa
 minikube addons enable ingress
 ```
 
-### 2. **Set Up Domain**
+### 2. **Apply Ingress Configuration**
 
-Find your Minikube IP:
+Apply your Ingress resource:
+
+```bash
+kubectl apply -f url-shortener-ingress.yaml
+```
+
+### 3. **Set Up Domain**
+
+Get your Minikube IP:
 
 ```bash
 minikube ip
 ```
 
-Edit your hosts file:
+Edit your `/etc/hosts` file:
 
 ```bash
 sudo nano /etc/hosts
 ```
 
-Add:
+Add the following line:
 
 ```
 <minikube-ip> url-shortener.local
 ```
 
-Now access the application at:
+Now your website will be available at:
 
 ```bash
 http://url-shortener.local
 ```
+
+---
+
+## 🧪 **Stress Testing the URL Shortener**
+
+Use the included script `stress_test_shortener.py` to simulate multiple users generating short URLs concurrently.
+
+### 1. **Prerequisites**
+
+Install Python dependencies:
+
+```bash
+pip install requests beautifulsoup4
+```
+
+### 2. **Run the Stress Test**
+
+```bash
+python stress_test_shortener.py
+```
+
+This will:
+
+- Simulate **200 users**
+- Each sending **100 requests**
+- Randomly generating long URLs
+- Printing responses (shortened URLs or errors)
+
+> Make sure the app is accessible at `http://url-shortener.local` and Ingress is working before running the script.
 
 ---
 
